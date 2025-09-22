@@ -4,7 +4,7 @@
 
 #define MAX 10   // Tamaño máximo permitido para la matriz
 
-// Función que llena la matriz con números aleatorios entre 1 y 100
+// Funcion que llena la matriz con números aleatorios entre 1 y 100
 void llenarMatriz(int n, int matriz[MAX][MAX]) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -13,7 +13,7 @@ void llenarMatriz(int n, int matriz[MAX][MAX]) {
     }
 }
 
-// Función para mostrar la matriz en forma tabular
+// Funcion para mostrar la matriz en forma tabular
 void mostrarMatriz(int n, int matriz[MAX][MAX]) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -23,7 +23,7 @@ void mostrarMatriz(int n, int matriz[MAX][MAX]) {
     }
 }
 
-// Función que calcula la suma de todos los elementos de la matriz
+// Funcion que calcula la suma de todos los elementos de la matriz
 int sumaMatriz(int n, int matriz[MAX][MAX]) {
     int suma = 0;
     for (int i = 0; i < n; i++)
@@ -32,7 +32,7 @@ int sumaMatriz(int n, int matriz[MAX][MAX]) {
     return suma;
 }
 
-// Función que cuenta pares, impares y divisibles entre 7
+// Funcion que cuenta pares, impares y divisibles entre 7
 void contarElementos(int n, int matriz[MAX][MAX], int *pares, int *impares, int *div7) {
     *pares = *impares = *div7 = 0; // Inicializamos contadores
     for (int i = 0; i < n; i++) {
@@ -44,7 +44,7 @@ void contarElementos(int n, int matriz[MAX][MAX], int *pares, int *impares, int 
     }
 }
 
-// Función que genera la transpuesta de una matriz
+// Funcion que genera la transpuesta de una matriz
 void transpuesta(int n, int matriz[MAX][MAX], int matrizT[MAX][MAX]) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -63,7 +63,7 @@ int main() {
     printf("Ingrese tamaño de la matriz (max 10): ");
     scanf("%d", &n);
 
-    if (n > 10 || n < 1) { // Validación del tamaño ingresado
+    if (n > 10 || n < 1) { // Validacion del tamaño ingresado
         printf("Tamaño no válido.\n");
         return 1;
     }
