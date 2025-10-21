@@ -1,5 +1,5 @@
 #include <stdio.h>   // Librería estándar para entrada y salida
-#include <string.h>  // Para manejo de cadenas (strcpy, strstr, etc.)
+#include <string.h>  
 
 // Función para llenar el texto
 void llenarTexto(char *texto, int tamano) {
@@ -68,3 +68,4 @@ int main() {
 
     return 0;
 }
+
