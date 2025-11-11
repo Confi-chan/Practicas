@@ -14,7 +14,7 @@ typedef struct {
     char nombre[50];
 } Alumno;
 
-typedef struct {
+typedef struct {// Estructura que relaciona un alumno con una tarea y su calificación
     int idAlumno;
     int idTarea;
     float calificacion;
@@ -32,3 +32,37 @@ void gestionarTareas();
 void gestionarAlumnos();
 void asignarCalificaciones();
 void mostrarDatos();
+
+// Función principal
+int main() {
+    menu(); // Inicia el programa mostrando el menú principal
+    return 0;
+
+}
+
+// Menú principal con opciones
+// -------------------------------
+void menu() {
+    int opcion;
+    do {
+        printf("\n===== MENU PRINCIPAL =====\n");
+        printf("1. Gestionar tareas\n");
+        printf("2. Gestionar alumnos\n");
+        printf("3. Asignar calificaciones\n");
+        printf("4. Mostrar todos los datos\n");
+        printf("0. Salir\n");
+        printf("Seleccione una opcion: ");
+        scanf("%d", &opcion);
+        getchar(); // Limpia el buffer del teclado
+
+        // Selección de opción según el número ingresado
+        switch (opcion) {
+            case 1: gestionarTareas(); break;
+            case 2: gestionarAlumnos(); break;
+            case 3: asignarCalificaciones(); break;
+            case 4: mostrarDatos(); break;
+            case 0: printf("Saliendo del programa...\n"); break;
+            default: printf("Opcion no valida. Intente de nuevo.\n");
+        }
+    } while (opcion != 0);
+}
