@@ -25,3 +25,10 @@ Tarea tareas[MAX_TAREAS];
 Alumno alumnos[MAX_ALUMNOS];
 Calificacion calificaciones[MAX_ALUMNOS * MAX_TAREAS];
 int contadorTareas = 0, contadorAlumnos = 0, contadorCalificaciones = 0;
+
+// Prototipos
+void menu();
+void gestionarTareas();
+void gestionarAlumnos();
+void asignarCalificaciones();
+void mostrarDatos();
