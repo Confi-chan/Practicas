@@ -4,9 +4,9 @@
 #define MAX_ALUMNOS 50
 #define MAX_TAREAS 50
 
-// -------------------------------
+
 // Estructuras principales
-// -------------------------------
+
 
 // Estructura para guardar los datos de una tarea
 typedef struct {
@@ -26,9 +26,8 @@ typedef struct {
     float calificacion;
 } Calificacion;
 
-// -------------------------------
+
 // Variables globales
-// -------------------------------
 Tarea tareas[MAX_TAREAS];
 Alumno alumnos[MAX_ALUMNOS];
 Calificacion calificaciones[MAX_ALUMNOS * MAX_TAREAS];
@@ -37,9 +36,9 @@ int contadorTareas = 0;
 int contadorAlumnos = 0;
 int contadorCalificaciones = 0;
 
-// -------------------------------
+
 // Prototipos de funciones
-// -------------------------------
+
 void menu();
 void gestionarTareas();
 void gestionarAlumnos();
@@ -54,9 +53,8 @@ int main() {
     return 0;
 }
 
-// -------------------------------
+
 // Menú principal con opciones
-// -------------------------------
 void menu() {
     int opcion;
     do {
@@ -82,9 +80,9 @@ void menu() {
     } while (opcion != 0);
 }
 
-// -------------------------------
+
 // Función para registrar tareas
-// -------------------------------
+
 void gestionarTareas() {
     if (contadorTareas < MAX_TAREAS) {
         printf("\n--- Registro de Tarea ---\n");
@@ -106,9 +104,8 @@ void gestionarTareas() {
     }
 }
 
-// -------------------------------
 // Función para registrar alumnos
-// -------------------------------
+
 void gestionarAlumnos() {
     if (contadorAlumnos < MAX_ALUMNOS) {
         printf("\n--- Registro de Alumno ---\n");
@@ -125,9 +122,8 @@ void gestionarAlumnos() {
     }
 }
 
-// -------------------------------
 // Función para asignar calificaciones
-// -------------------------------
+
 void asignarCalificaciones() {
     // Verifica si existen alumnos y tareas registrados
     if (contadorAlumnos == 0 || contadorTareas == 0) {
@@ -157,9 +153,7 @@ void asignarCalificaciones() {
     printf("Calificaciones asignadas correctamente.\n");
 }
 
-// -------------------------------
 // Función para mostrar toda la información
-// -------------------------------
 void mostrarDatos() {
     printf("\n===== LISTADO DE TAREAS =====\n");
     for (int i = 0; i < contadorTareas; i++) {
