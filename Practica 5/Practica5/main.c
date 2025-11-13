@@ -51,3 +51,45 @@ int contadorCalificaciones = 0;
 Persona personas[MAX_PERSONAS];
 int contadorPersonas = 0;
 char *mensaje = NULL; // Texto base (memoria dinámica)
+
+
+// Prototipos
+// ----------------------------
+void menu();
+void gestionarTareas();
+void gestionarAlumnos();
+void asignarCalificaciones();
+void mostrarDatos();
+
+// Nuevas funciones del editor de texto
+void menuEditor();
+void crearTexto();
+void modificarTexto();
+void capturarPersonas();
+void mostrarMensajes();
+
+
+// Función principal
+// ----------------------------
+int main() {
+    menu();
+    if (mensaje != NULL) free(mensaje); // Liberar memoria antes de salir
+    return 0;
+}
+
+
+// Menú principal
+// ----------------------------
+void menu() {
+    int opcion;
+    do {
+        printf("\n===== MENU PRINCIPAL =====\n");
+        printf("1. Gestionar tareas\n");
+        printf("2. Gestionar alumnos\n");
+        printf("3. Asignar calificaciones\n");
+        printf("4. Mostrar todos los datos\n");
+        printf("5. Editor de texto (mensajes personalizados)\n");
+        printf("0. Salir\n");
+        printf("Seleccione una opcion: ");
+        scanf("%d", &opcion);
+        getchar();
