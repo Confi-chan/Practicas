@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_ALUMNOS 50
-#define MAX_TAREAS 50
+
 #define MAX_PERSONAS 50
 
 // Estructuras principales
@@ -53,13 +52,7 @@ int contadorPersonas = 0;
 char *mensaje = NULL; // Texto base (memoria dinámica)
 
 
-// Prototipos
-// ----------------------------
-void menu();
-void gestionarTareas();
-void gestionarAlumnos();
-void asignarCalificaciones();
-void mostrarDatos();
+
 
 // Nuevas funciones del editor de texto
 void menuEditor();
@@ -81,18 +74,6 @@ int main() {
 // Menú principal
 // ----------------------------
 void menu() {
-    int opcion;
-    do {
-        printf("\n===== MENU PRINCIPAL =====\n");
-        printf("1. Gestionar tareas\n");
-        printf("2. Gestionar alumnos\n");
-        printf("3. Asignar calificaciones\n");
-        printf("4. Mostrar todos los datos\n");
-        printf("5. Editor de texto (mensajes personalizados)\n");
-        printf("0. Salir\n");
-        printf("Seleccione una opcion: ");
-        scanf("%d", &opcion);
-        getchar();
 
         switch (opcion) {
             case 1: gestionarTareas(); break;
@@ -104,7 +85,7 @@ void menu() {
             default: printf("Opcion no valida.\n");
         }
     } while (opcion != 0);
-}
+
 
 // Funciones originales
 // ----------------------------
@@ -231,3 +212,49 @@ void modificarTexto() {
         printf("No hay texto creado aún. Use la opción 1 primero.\n");
         return;
     }
+
+
+     char buffer[500];
+    printf("\n--- Modificar Texto ---\n");
+    printf("Texto actual: %s\n", mensaje);
+    printf("Ingrese el nuevo texto:\n> ");
+    fgets(buffer, sizeof(buffer), stdin);
+    buffer[strcspn(buffer, "\n")] = 0;
+
+    mensaje = realloc(mensaje, strlen(buffer) + 1);
+    strcpy(mensaje, buffer);
+    printf("Texto actualizado correctamente.\n");
+}
+
+// Capturar personas
+void capturarPersonas() {
+    if (contadorPersonas < MAX_PERSONAS) {
+        printf("\n--- Registro de Persona ---\n");
+        printf("Nombre: ");
+        fgets(personas[contadorPersonas].nombre, 50, stdin);
+        personas[contadorPersonas].nombre[strcspn(personas[contadorPersonas].nombre, "\n")] = 0;
+
+        printf("Cargo: ");
+        fgets(personas[contadorPersonas].cargo, 50, stdin);
+        personas[contadorPersonas].cargo[strcspn(personas[contadorPersonas].cargo, "\n")] = 0;
+
+        contadorPersonas++;
+        printf("Persona registrada exitosamente.\n");
+    } else {
+        printf("No se pueden agregar más personas.\n");
+    }
+}
+
+// Mostrar mensajes personalizados
+void mostrarMensajes() {
+    if (mensaje == NULL || contadorPersonas == 0) {
+        printf("Debe tener un texto y al menos una persona registrada.\n");
+        return;
+    }
+
+    printf("\n===== MENSAJES PERSONALIZADOS =====\n");
+    for (int i = 0; i < contadorPersonas; i++) {
+        printf("\nPara: %s (%s)\n", personas[i].nombre, personas[i].cargo);
+        printf("Mensaje: %s\n", mensaje);
+    }
+}
