@@ -126,3 +126,108 @@ void gestionarTareas() {
     }
 }
 
+void gestionarAlumnos() {
+    if (contadorAlumnos < MAX_ALUMNOS) {
+        printf("\n--- Registro de Alumno ---\n");
+        printf("Nombre del alumno: ");
+        fgets(alumnos[contadorAlumnos].nombre, 50, stdin);
+        alumnos[contadorAlumnos].nombre[strcspn(alumnos[contadorAlumnos].nombre, "\n")] = 0;
+
+        contadorAlumnos++;
+        printf("Alumno registrado exitosamente.\n");
+    } else {
+        printf("No se pueden agregar más alumnos.\n");
+    }
+}
+
+void asignarCalificaciones() {
+    if (contadorAlumnos == 0 || contadorTareas == 0) {
+        printf("\nDebe haber al menos un alumno y una tarea registrados.\n");
+        return;
+    }
+
+    int i, j;
+    float calif;
+    printf("\n--- Asignacion de Calificaciones ---\n");
+
+    for (i = 0; i < contadorAlumnos; i++) {
+        for (j = 0; j < contadorTareas; j++) {
+            printf("Calificacion de %s en la tarea '%s': ",
+                   alumnos[i].nombre, tareas[j].nombre);
+            scanf("%f", &calif);
+            getchar();
+
+            calificaciones[contadorCalificaciones].idAlumno = i;
+            calificaciones[contadorCalificaciones].idTarea = j;
+            calificaciones[contadorCalificaciones].calificacion = calif;
+            contadorCalificaciones++;
+        }
+    }
+    printf("Calificaciones asignadas correctamente.\n");
+}
+
+void mostrarDatos() {
+    printf("\n===== LISTADO DE TAREAS =====\n");
+    for (int i = 0; i < contadorTareas; i++) {
+        printf("%d. %s - %s\n", i + 1, tareas[i].nombre, tareas[i].descripcion);
+    }
+
+    printf("\n===== LISTADO DE ALUMNOS =====\n");
+    for (int i = 0; i < contadorAlumnos; i++) {
+        printf("%d. %s\n", i + 1, alumnos[i].nombre);
+    }
+
+    printf("\n===== CALIFICACIONES =====\n");
+    for (int i = 0; i < contadorCalificaciones; i++) {
+        int idA = calificaciones[i].idAlumno;
+        int idT = calificaciones[i].idTarea;
+        printf("%s - %s: %.2f\n",
+               alumnos[idA].nombre, tareas[idT].nombre, calificaciones[i].calificacion);
+    }
+}
+
+// NUEVA SECCIÓN: Editor de Texto
+// ----------------------------
+void menuEditor() {
+    int opcion;
+    do {
+        printf("\n===== EDITOR DE TEXTO =====\n");
+        printf("1. Crear texto base\n");
+        printf("2. Modificar texto existente\n");
+        printf("3. Capturar personas (nombre y cargo)\n");
+        printf("4. Mostrar mensajes personalizados\n");
+        printf("0. Volver al menú principal\n");
+        printf("Seleccione una opcion: ");
+        scanf("%d", &opcion);
+        getchar();
+
+        switch (opcion) {
+            case 1: crearTexto(); break;
+            case 2: modificarTexto(); break;
+            case 3: capturarPersonas(); break;
+            case 4: mostrarMensajes(); break;
+            case 0: break;
+            default: printf("Opcion no valida.\n");
+        }
+    } while (opcion != 0);
+}
+
+// Crear texto base
+void crearTexto() {
+    char buffer[500];
+    printf("\n--- Crear Texto Base ---\n");
+    printf("Escriba el mensaje que desea guardar:\n> ");
+    fgets(buffer, sizeof(buffer), stdin);
+    buffer[strcspn(buffer, "\n")] = 0;
+
+    mensaje = (char *)malloc(strlen(buffer) + 1);
+    strcpy(mensaje, buffer);
+    printf("Texto guardado correctamente.\n");
+}
+
+// Modificar texto
+void modificarTexto() {
+    if (mensaje == NULL) {
+        printf("No hay texto creado aún. Use la opción 1 primero.\n");
+        return;
+    }
