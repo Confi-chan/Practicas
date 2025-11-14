@@ -93,3 +93,36 @@ void menu() {
         printf("Seleccione una opcion: ");
         scanf("%d", &opcion);
         getchar();
+
+        switch (opcion) {
+            case 1: gestionarTareas(); break;
+            case 2: gestionarAlumnos(); break;
+            case 3: asignarCalificaciones(); break;
+            case 4: mostrarDatos(); break;
+            case 5: menuEditor(); break;
+            case 0: printf("Saliendo del programa...\n"); break;
+            default: printf("Opcion no valida.\n");
+        }
+    } while (opcion != 0);
+}
+
+// Funciones originales
+// ----------------------------
+void gestionarTareas() {
+    if (contadorTareas < MAX_TAREAS) {
+        printf("\n--- Registro de Tarea ---\n");
+        printf("Nombre de la tarea: ");
+        fgets(tareas[contadorTareas].nombre, 50, stdin);
+        tareas[contadorTareas].nombre[strcspn(tareas[contadorTareas].nombre, "\n")] = 0;
+
+        printf("Descripcion: ");
+        fgets(tareas[contadorTareas].descripcion, 100, stdin);
+        tareas[contadorTareas].descripcion[strcspn(tareas[contadorTareas].descripcion, "\n")] = 0;
+
+        contadorTareas++;
+        printf("Tarea registrada exitosamente.\n");
+    } else {
+        printf("No se pueden agregar más tareas.\n");
+    }
+}
+
