@@ -78,6 +78,13 @@ void menuEditor() {
 // 1. CREAR TEXTO (memoria dinámica)
 // -------------------------
 void crearTexto() {
+    // Si ya existe texto, NO debe reemplazarlo
+    if (textoBase != NULL) {
+        printf("\nYA existe un texto base.\n");
+        printf("Si desea cambiarlo, use la opción 2 (Modificar texto).\n");
+        return;
+    }
+
     char buffer[500];
 
     printf("\n--- Crear Texto Base ---\n");
@@ -96,7 +103,6 @@ void crearTexto() {
     strcpy(textoBase, buffer);
     printf("Texto guardado exitosamente.\n");
 }
-
 
 // -------------------------
 // 2. MODIFICAR TEXTO
