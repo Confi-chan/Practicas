@@ -2,259 +2,171 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 #define MAX_PERSONAS 50
 
-// Estructuras principales
-
-// Estructura para guardar los datos de una tarea
-typedef struct
-{
-    char nombre[50];
-    char descripcion[100];
-} Tarea;
-
-// Estructura para guardar los datos de un alumno
-typedef struct
-{
-    char nombre[50];
-} Alumno;
-
-// Estructura que relaciona un alumno con una tarea y su calificación
-typedef struct
-{
-    int idAlumno;
-    int idTarea;
-    float calificacion;
-} Calificacion;
-
-// Estructura para el editor de texto (nueva parte)
-typedef struct
-{
+// -------------------------
+//  STRUCT PERSONA
+// -------------------------
+typedef struct {
     char nombre[50];
     char cargo[50];
 } Persona;
 
-
-// Variables globales
-// ----------------------------
-Tarea tareas[MAX_TAREAS];
-Alumno alumnos[MAX_ALUMNOS];
-Calificacion calificaciones[MAX_ALUMNOS * MAX_TAREAS];
-
-int contadorTareas = 0;
-int contadorAlumnos = 0;
-int contadorCalificaciones = 0;
-
-// Variables para el módulo de texto
+// -------------------------
+// VARIABLES GLOBALES
+// -------------------------
 Persona personas[MAX_PERSONAS];
 int contadorPersonas = 0;
-char *mensaje = NULL; // Texto base (memoria dinámica)
 
+char *textoBase = NULL;    // Mensaje dinámico
+int textoLong = 0;
 
-
-
-// Nuevas funciones del editor de texto
+// -------------------------
+// PROTOTIPOS
+// -------------------------
 void menuEditor();
 void crearTexto();
 void modificarTexto();
 void capturarPersonas();
-void mostrarMensajes();
+void mostrarDocumentos();
 
 
-// Función principal
-// ----------------------------
+// -------------------------
+// PROGRAMA PRINCIPAL
+// -------------------------
 int main() {
-    menu();
-    if (mensaje != NULL) free(mensaje); // Liberar memoria antes de salir
+    menuEditor();
+
+    if (textoBase != NULL)
+        free(textoBase);
+
     return 0;
 }
 
 
-// Menú principal
-// ----------------------------
-void menu() {
-
-        switch (opcion) {
-            case 1: gestionarTareas(); break;
-            case 2: gestionarAlumnos(); break;
-            case 3: asignarCalificaciones(); break;
-            case 4: mostrarDatos(); break;
-            case 5: menuEditor(); break;
-            case 0: printf("Saliendo del programa...\n"); break;
-            default: printf("Opcion no valida.\n");
-        }
-    } while (opcion != 0);
-
-
-// Funciones originales
-// ----------------------------
-void gestionarTareas() {
-    if (contadorTareas < MAX_TAREAS) {
-        printf("\n--- Registro de Tarea ---\n");
-        printf("Nombre de la tarea: ");
-        fgets(tareas[contadorTareas].nombre, 50, stdin);
-        tareas[contadorTareas].nombre[strcspn(tareas[contadorTareas].nombre, "\n")] = 0;
-
-        printf("Descripcion: ");
-        fgets(tareas[contadorTareas].descripcion, 100, stdin);
-        tareas[contadorTareas].descripcion[strcspn(tareas[contadorTareas].descripcion, "\n")] = 0;
-
-        contadorTareas++;
-        printf("Tarea registrada exitosamente.\n");
-    } else {
-        printf("No se pueden agregar más tareas.\n");
-    }
-}
-
-void gestionarAlumnos() {
-    if (contadorAlumnos < MAX_ALUMNOS) {
-        printf("\n--- Registro de Alumno ---\n");
-        printf("Nombre del alumno: ");
-        fgets(alumnos[contadorAlumnos].nombre, 50, stdin);
-        alumnos[contadorAlumnos].nombre[strcspn(alumnos[contadorAlumnos].nombre, "\n")] = 0;
-
-        contadorAlumnos++;
-        printf("Alumno registrado exitosamente.\n");
-    } else {
-        printf("No se pueden agregar más alumnos.\n");
-    }
-}
-
-void asignarCalificaciones() {
-    if (contadorAlumnos == 0 || contadorTareas == 0) {
-        printf("\nDebe haber al menos un alumno y una tarea registrados.\n");
-        return;
-    }
-
-    int i, j;
-    float calif;
-    printf("\n--- Asignacion de Calificaciones ---\n");
-
-    for (i = 0; i < contadorAlumnos; i++) {
-        for (j = 0; j < contadorTareas; j++) {
-            printf("Calificacion de %s en la tarea '%s': ",
-                   alumnos[i].nombre, tareas[j].nombre);
-            scanf("%f", &calif);
-            getchar();
-
-            calificaciones[contadorCalificaciones].idAlumno = i;
-            calificaciones[contadorCalificaciones].idTarea = j;
-            calificaciones[contadorCalificaciones].calificacion = calif;
-            contadorCalificaciones++;
-        }
-    }
-    printf("Calificaciones asignadas correctamente.\n");
-}
-
-void mostrarDatos() {
-    printf("\n===== LISTADO DE TAREAS =====\n");
-    for (int i = 0; i < contadorTareas; i++) {
-        printf("%d. %s - %s\n", i + 1, tareas[i].nombre, tareas[i].descripcion);
-    }
-
-    printf("\n===== LISTADO DE ALUMNOS =====\n");
-    for (int i = 0; i < contadorAlumnos; i++) {
-        printf("%d. %s\n", i + 1, alumnos[i].nombre);
-    }
-
-    printf("\n===== CALIFICACIONES =====\n");
-    for (int i = 0; i < contadorCalificaciones; i++) {
-        int idA = calificaciones[i].idAlumno;
-        int idT = calificaciones[i].idTarea;
-        printf("%s - %s: %.2f\n",
-               alumnos[idA].nombre, tareas[idT].nombre, calificaciones[i].calificacion);
-    }
-}
-
-// NUEVA SECCIÓN: Editor de Texto
-// ----------------------------
+// -------------------------
+// MENÚ PRINCIPAL DEL EDITOR
+// -------------------------
 void menuEditor() {
-    int opcion;
+    int opc;
+
     do {
-        printf("\n===== EDITOR DE TEXTO =====\n");
+        printf("\n===== EDITOR DE TEXTO BASICO =====\n");
         printf("1. Crear texto base\n");
         printf("2. Modificar texto existente\n");
         printf("3. Capturar personas (nombre y cargo)\n");
-        printf("4. Mostrar mensajes personalizados\n");
-        printf("0. Volver al menú principal\n");
+        printf("4. Mostrar documentos personalizados\n");
+        printf("0. Salir\n");
         printf("Seleccione una opcion: ");
-        scanf("%d", &opcion);
+        scanf("%d", &opc);
         getchar();
 
-        switch (opcion) {
+        switch (opc) {
             case 1: crearTexto(); break;
             case 2: modificarTexto(); break;
             case 3: capturarPersonas(); break;
-            case 4: mostrarMensajes(); break;
-            case 0: break;
-            default: printf("Opcion no valida.\n");
+            case 4: mostrarDocumentos(); break;
+            case 0: printf("Saliendo...\n"); break;
+            default: printf("Opcion NO valida.\n");
         }
-    } while (opcion != 0);
+
+    } while (opc != 0);
 }
 
-// Crear texto base
+
+// -------------------------
+// 1. CREAR TEXTO (memoria dinámica)
+// -------------------------
 void crearTexto() {
     char buffer[500];
+
     printf("\n--- Crear Texto Base ---\n");
-    printf("Escriba el mensaje que desea guardar:\n> ");
+    printf("Ingrese el texto que desea guardar:\n> ");
     fgets(buffer, sizeof(buffer), stdin);
     buffer[strcspn(buffer, "\n")] = 0;
 
-    mensaje = (char *)malloc(strlen(buffer) + 1);
-    strcpy(mensaje, buffer);
-    printf("Texto guardado correctamente.\n");
+    textoLong = strlen(buffer) + 1;
+    textoBase = (char*)malloc(textoLong);
+
+    if (textoBase == NULL) {
+        printf("Error al asignar memoria.\n");
+        return;
+    }
+
+    strcpy(textoBase, buffer);
+    printf("Texto guardado exitosamente.\n");
 }
 
-// Modificar texto
+
+// -------------------------
+// 2. MODIFICAR TEXTO
+// -------------------------
 void modificarTexto() {
-    if (mensaje == NULL) {
-        printf("No hay texto creado aún. Use la opción 1 primero.\n");
+    if (textoBase == NULL) {
+        printf("No hay texto aún. Use opción 1 primero.\n");
         return;
     }
 
-
-     char buffer[500];
+    char buffer[500];
     printf("\n--- Modificar Texto ---\n");
-    printf("Texto actual: %s\n", mensaje);
-    printf("Ingrese el nuevo texto:\n> ");
+    printf("Texto actual:\n%s\n", textoBase);
+    printf("Escriba el nuevo texto:\n> ");
     fgets(buffer, sizeof(buffer), stdin);
     buffer[strcspn(buffer, "\n")] = 0;
 
-    mensaje = realloc(mensaje, strlen(buffer) + 1);
-    strcpy(mensaje, buffer);
-    printf("Texto actualizado correctamente.\n");
+    textoLong = strlen(buffer) + 1;
+    textoBase = (char*)realloc(textoBase, textoLong);
+
+    strcpy(textoBase, buffer);
+    printf("Texto actualizado exitosamente.\n");
 }
 
-// Capturar personas
+
+// -------------------------
+// 3. CAPTURAR PERSONAS
+// -------------------------
 void capturarPersonas() {
-    if (contadorPersonas < MAX_PERSONAS) {
-        printf("\n--- Registro de Persona ---\n");
-        printf("Nombre: ");
-        fgets(personas[contadorPersonas].nombre, 50, stdin);
-        personas[contadorPersonas].nombre[strcspn(personas[contadorPersonas].nombre, "\n")] = 0;
-
-        printf("Cargo: ");
-        fgets(personas[contadorPersonas].cargo, 50, stdin);
-        personas[contadorPersonas].cargo[strcspn(personas[contadorPersonas].cargo, "\n")] = 0;
-
-        contadorPersonas++;
-        printf("Persona registrada exitosamente.\n");
-    } else {
+    if (contadorPersonas >= MAX_PERSONAS) {
         printf("No se pueden agregar más personas.\n");
-    }
-}
-
-// Mostrar mensajes personalizados
-void mostrarMensajes() {
-    if (mensaje == NULL || contadorPersonas == 0) {
-        printf("Debe tener un texto y al menos una persona registrada.\n");
         return;
     }
 
-    printf("\n===== MENSAJES PERSONALIZADOS =====\n");
+    printf("\n--- Captura de Persona ---\n");
+
+    printf("Nombre: ");
+    fgets(personas[contadorPersonas].nombre, 50, stdin);
+    personas[contadorPersonas].nombre[strcspn(personas[contadorPersonas].nombre, "\n")] = 0;
+
+    printf("Cargo: ");
+    fgets(personas[contadorPersonas].cargo, 50, stdin);
+    personas[contadorPersonas].cargo[strcspn(personas[contadorPersonas].cargo, "\n")] = 0;
+
+    contadorPersonas++;
+
+    printf("Persona registrada exitosamente.\n");
+}
+
+
+// -------------------------
+// 4. MOSTRAR DOCUMENTO FINAL
+// -------------------------
+void mostrarDocumentos() {
+    if (textoBase == NULL) {
+        printf("No existe texto base.\n");
+        return;
+    }
+    if (contadorPersonas == 0) {
+        printf("No hay personas registradas.\n");
+        return;
+    }
+
+    printf("\n===== DOCUMENTOS PERSONALIZADOS =====\n");
+
     for (int i = 0; i < contadorPersonas; i++) {
-        printf("\nPara: %s (%s)\n", personas[i].nombre, personas[i].cargo);
-        printf("Mensaje: %s\n", mensaje);
+        printf("\n---------------------------------------\n");
+        printf("Para: %s\nCargo: %s\n",
+            personas[i].nombre, personas[i].cargo);
+        printf("Mensaje:\n%s\n", textoBase);
+        printf("---------------------------------------\n");
     }
 }
